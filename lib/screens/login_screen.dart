@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iti_quez/screens/category_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -110,7 +111,11 @@ class LoginScreen extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30))),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Categoryscreen()),
+                            );
                           },
                           child: const Text("Login"))),
                   const SizedBox(
