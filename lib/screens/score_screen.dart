@@ -1,49 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:iti_quez/Screens/Opening_screen.dart';
+import 'package:iti_quez/Screens/login_screen.dart';
 
-class Scorescreen extends StatelessWidget {
-  const Scorescreen({super.key});
+class ScoreScreen extends StatelessWidget {
+  final int index;
+  final int score;
+  const ScoreScreen({super.key, required this.index, required this.score});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.all(30),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          RichText(
+        body: Container(
+      margin: const EdgeInsets.all(30),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RichText(
               text: TextSpan(
-            text: 'Hello',
-            style: TextStyle(fontSize: 20, color: Colors.black),
-            children: <TextSpan>[
-              TextSpan(
-                text: ' Mamdouh Ali',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 20,
-                  fontStyle: FontStyle.italic,
-                ),
+                text: 'Hello ',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: userNameTextEditingController.text,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 33, 11, 224)),
+                  ),
+                  const TextSpan(
+                    text: ', your Score is ',
+                  ),
+                  TextSpan(
+                    text: '$score /${index + 1} ',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Color.fromARGB(255, 33, 11, 224)),
+                  ),
+                ],
               ),
-              TextSpan(text: ' your score is '),
-              TextSpan(
-                text: '15/20',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 20,
-                  fontStyle: FontStyle.italic,
-                ),
-              )
-            ],
-          )),
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OpeningScreen()),
-                );
-              },
-              child: Text("Play Again")),
-        ]),
+            ),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OpeningScreen()),
+                  );
+                },
+                child: const Text("Play again"))
+          ],
+        ),
       ),
-    );
+    ));
   }
 }

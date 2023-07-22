@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iti_quez/screens/category_screen.dart';
 
+TextEditingController userNameTextEditingController = TextEditingController();
+
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,119 +47,135 @@ class LoginScreen extends StatelessWidget {
                   color: Color.fromARGB(255, 239, 236, 236),
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(50))),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Login",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Login",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-                  // Username text field
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Username",
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                    // Username text field
+                    TextFormField(
+                      controller: userNameTextEditingController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "user name must not be empty";
+                        } else if (value.length < 9) {
+                          return "must be more than 9 character";
+                        } else if (!value[0].contains(RegExp(r'[A-Z]'))) {
+                          return "First character must be Upper Case";
+                        }
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.person),
+                        hintText: "Username",
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
                     ),
-                  ),
 
-                  SizedBox(
-                    height: 18,
-                  ),
-
-                  // Password text field
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: Icon(Icons.visibility_outlined),
-                      hintText: "Password",
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                    SizedBox(
+                      height: 18,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Row(
-                    children: [
-                      const Spacer(),
-                      const Text("New to quizz app? "),
 
-                      TextButton(
-                          onPressed: () {}, child: const Text("Register"))
+                    // Password text field
+                    //  TextField(
+                    //  decoration: InputDecoration(
+                    //  prefixIcon: Icon(Icons.lock),
+                    //suffixIcon: Icon(Icons.visibility_outlined),
+                    //hintText: "Password",
+                    //  filled: true,
+                    //  fillColor: Colors.white,
+                    //  border: OutlineInputBorder(
+                    //    borderRadius: BorderRadius.circular(30),
+                    // ),
+                    // ),
+                    // ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      children: [
+                        const Spacer(),
+                        const Text("New to quizz app? "),
 
-                      // GestureDetector(onTap: () {}, child: Text("Register"))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 2 - 60,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              elevation: 15,
-                              shadowColor: Colors.black,
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30))),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Categoryscreen()),
-                            );
-                          },
-                          child: const Text("Login"))),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //
+                        TextButton(
+                            onPressed: () {}, child: const Text("Register"))
 
-                  const Icon(
-                    Icons.fingerprint,
-                    size: 60,
-                    color: Colors.blue,
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const Text(
-                    "Use Touch ID",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: true,
-                            onChanged: (value) {},
-                          ),
-                          const Text("Remember me"),
-                        ],
-                      ),
-                      // Expanded(child: SizedBox()),
-                      // Spacer(),
-                      TextButton(
-                          onPressed: () {},
-                          child: const Text("Forget Password?")),
-                    ],
-                  )
-                ],
+                        // GestureDetector(onTap: () {}, child: Text("Register"))
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width / 2 - 60,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                elevation: 15,
+                                shadowColor: Colors.black,
+                                backgroundColor: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30))),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CategoryScreen()),
+                                );
+                              }
+                            },
+                            child: const Text("Login"))),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    //
+
+                    const Icon(
+                      Icons.fingerprint,
+                      size: 60,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    const Text(
+                      "Use Touch ID",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    const Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: true,
+                              onChanged: (value) {},
+                            ),
+                            const Text("Remember me"),
+                          ],
+                        ),
+                        // Expanded(child: SizedBox()),
+                        // Spacer(),
+                        TextButton(
+                            onPressed: () {},
+                            child: const Text("Forget Password?")),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
             // Positioned(

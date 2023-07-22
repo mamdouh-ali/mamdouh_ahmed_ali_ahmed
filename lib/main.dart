@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-import 'Screens/login_screen.dart';
-import 'Screens/Opening_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iti_quez/screens/Task7/Task7.dart';
+import 'package:iti_quez/screens/Task7/Task7ACubit/task7_cubit.dart';
+import 'package:iti_quez/screens/Task7B/Task7B.dart';
+import 'package:iti_quez/screens/Task7C/Task7CCubit/selected_radio_cubit.dart';
+
+import 'screens/Task7B/Task7BCubit/showhide_pass_cubit.dart';
+import 'screens/Task7C/Task7C.dart';
 
 void main() {
   runApp(
@@ -13,12 +19,25 @@ class OurQuizzApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => Task7Cubit(),
+        ),
+        BlocProvider(
+          create: (context) => ShowhidePassCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SelectedRadioCubit(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: RadioButtonTask(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: OpeningScreen(),
     );
   }
 }

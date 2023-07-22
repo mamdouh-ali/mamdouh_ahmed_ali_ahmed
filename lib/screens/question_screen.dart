@@ -1,86 +1,119 @@
 import 'package:flutter/material.dart';
+import 'package:iti_quez/screens/score_screen.dart';
 
-import 'score_screen.dart';
+import '../Global/global_style.dart';
 
-class Qestionscreen extends StatelessWidget {
-  const Qestionscreen({super.key});
+// int index = 0;   // global
+
+class QuestionsScreen extends StatefulWidget {
+  final Color? themeColor;
+  final String? testName;
+  final List questionsList;
+
+  QuestionsScreen(
+      {super.key, this.themeColor, this.testName, required this.questionsList});
+
+  @override
+  State<QuestionsScreen> createState() => _QuestionsScreenState();
+}
+
+class _QuestionsScreenState extends State<QuestionsScreen> {
+  int index = 0;
+  int score = 0;
+
+  /// Local variable
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: widget.themeColor,
         leadingWidth: 100,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        leading: const Center(child: Text("The Test")),
-        title: Column(children: [Text("Question No:"), Text("15/20")]),
-        actions: [
-          const Padding(
+        leading: Center(child: Text(widget.testName!)),
+        title: Column(
+          children: [
+            Text("Qestion No:"),
+            Text("${index + 1}/${widget.questionsList.length}"),
+          ],
+        ),
+        actions: const [
+          Padding(
             padding: EdgeInsets.all(8.0),
             child: Icon(
-              Icons.local_hotel_outlined,
-              color: Colors.red,
+              Icons.local_parking_outlined,
+              color: Colors.orange,
             ),
           )
         ],
       ),
       body: Container(
-        padding: EdgeInsets.all(18),
+        padding: const EdgeInsets.all(18),
+        width: double.infinity,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Questions:",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              "Question:",
+              style: titlesStyle,
             ),
-            Text("كل كام عام يقام كاس العالم"),
+            Text(widget.questionsList[index]["question"]),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 1 / 16,
+              height: MediaQuery.of(context).size.height * 0.04,
             ),
-            Text("Answers:",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-            Center(
-              child: Column(
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Scorescreen()),
-                        );
-                      },
-                      child: Text("2")),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Scorescreen()),
-                        );
-                      },
-                      child: Text("3")),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Scorescreen()),
-                        );
-                      },
-                      child: Text("4")),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Scorescreen()),
-                        );
-                      },
-                      child: Text("5")),
-                ],
+            Text(
+              "Answers:",
+              style: titlesStyle,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+//  ...(widget.questionsList[index]["answers"] as List).map((e) => null)
+
+                    for (int i = 0;
+                        i <
+                            (widget.questionsList[index]["answers"] as List)
+                                .length;
+                        i++)
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: widget.themeColor),
+                          onPressed: () {
+                            // index = index + 1;
+
+                            score = score +
+                                widget.questionsList[index]["answers"][i]
+                                    ["score"] as int;
+
+                            if (index == widget.questionsList.length - 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ScoreScreen(
+                                          index: index,
+                                          score: score,
+                                        )),
+                              );
+                            } else {
+                              setState(() {
+                                index++; // i changed the state (Data)
+                              });
+
+                              print(widget.questionsList[index]["answers"][i]
+                                  ["score"]);
+
+                              print(score);
+                            }
+                          },
+                          child: Text(widget.questionsList[index]["answers"][i]
+                              ["ans"])),
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
